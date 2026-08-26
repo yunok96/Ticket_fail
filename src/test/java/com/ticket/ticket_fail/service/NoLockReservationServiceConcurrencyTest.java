@@ -37,8 +37,8 @@ class NoLockReservationServiceConcurrencyTest {
     private PerformanceRepository performanceRepository;
 
     @Test
-    @DisplayName("100 concurrent requests must never reserve more than the total seats")
-    void concurrentReservationsMustNotOverbook() throws InterruptedException {
+    @DisplayName("without locking, concurrent requests lose updates and overbook")
+    void concurrentReservationsLoseUpdatesWithoutLocking() throws InterruptedException {
         Performance saved = performanceRepository.save(new Performance("Hamlet", TOTAL_SEATS));
         long performanceId = saved.getId();
 
@@ -96,6 +96,6 @@ class NoLockReservationServiceConcurrencyTest {
 
         assertThat(result.getReservedSeats())
                 .as("without locking the counter drifts from the number of successful reservations")
-                .isEqualTo(successCount.get());
+                .isNotEqualTo(successCount.get());
     }
 }
