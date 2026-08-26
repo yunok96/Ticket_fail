@@ -1,0 +1,37 @@
+package com.ticket.ticket_fail.service;
+
+import com.ticket.ticket_fail.entity.OptimisticLockPerformance;
+import com.ticket.ticket_fail.entity.Performance;
+import com.ticket.ticket_fail.entity.Reservation;
+import com.ticket.ticket_fail.repository.OptimisticLockPerformanceRepository;
+import com.ticket.ticket_fail.repository.PerformanceRepository;
+import com.ticket.ticket_fail.repository.ReservationRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class OptimisticLockReservationService {
+    private final OptimisticLockPerformanceRepository performanceRepository;
+    private final ReservationRepository reservationRepository;
+
+    /**
+     * Stage 1: deliberately unsynchronised.
+     *
+     * The read of reservedSeats and the write that follows are not atomic,
+     * so two concurrent callers can both observe the same value, both pass
+     * the sold-out check, and both increment. This is a lost update, and it
+     * is the exact failure this stage is meant to reproduce.
+     */
+    @Transactional
+    public void reserve(long performanceId, String userId) {
+        OptimisticLockPerformance performance = performanceRepository.findById(performanceId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Performance not found: " + performanceId));
+
+        performance.reserve();
+
+        reservationRepository.save(new Reservation(performanceId, userId));
+    }
+}
