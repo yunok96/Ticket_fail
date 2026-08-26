@@ -17,12 +17,15 @@ public class OptimisticLockReservationService {
     private final ReservationRepository reservationRepository;
 
     /**
-     * Stage 1: deliberately unsynchronised.
+     * Stage 3: prevent overbooking with an optimistic lock.
      *
-     * The read of reservedSeats and the write that follows are not atomic,
-     * so two concurrent callers can both observe the same value, both pass
-     * the sold-out check, and both increment. This is a lost update, and it
-     * is the exact failure this stage is meant to reproduce.
+     * Nothing is locked. OptimisticLockPerformance carries a @Version column,
+     * so Hibernate appends "and version = ?" to the update and bumps the
+     * version as it writes. A caller that read a stale version updates no
+     * rows and is rejected at commit time, which means conflicts are detected
+     * after the fact rather than prevented. Correctness holds, but a losing
+     * caller is turned away even when a seat is still free — see
+     * OptimisticLockRetryReservationService for the missing half.
      */
     @Transactional
     public void reserve(long performanceId, String userId) {
