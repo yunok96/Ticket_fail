@@ -4,7 +4,7 @@
 최종적으로 이 코드를 영어로 설명할 수 있어야 한다.
 
 ## 기술 스택
-Java 21 / Spring Boot 3.x / Gradle / Spring Data JPA
+Java 17 / Spring Boot 3.x / Gradle / Spring Data JPA
 DB: H2 (2단계 락 실험 시 Docker Postgres로 전환 예정)
 
 ## 진행 상태

@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class ReservationServiceConcurrencyTest {
+class PessimisticLockReservationServiceConcurrencyTest {
 
     private static final int TOTAL_SEATS = 10;
     private static final int CONCURRENT_REQUESTS = 100;
@@ -31,7 +31,7 @@ class ReservationServiceConcurrencyTest {
     private static final int TIMEOUT_SECONDS = 30;
 
     @Autowired
-    private ReservationService reservationService;
+    private PessimisticLockReservationService reservationService;
 
     @Autowired
     private PerformanceRepository performanceRepository;

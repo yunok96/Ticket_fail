@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class ReservationServiceConcurrencyTest {
+class NoLockReservationServiceConcurrencyTest {
 
     private static final int TOTAL_SEATS = 10;
     private static final int CONCURRENT_REQUESTS = 100;
@@ -31,7 +31,7 @@ class ReservationServiceConcurrencyTest {
     private static final int TIMEOUT_SECONDS = 30;
 
     @Autowired
-    private ReservationService reservationService;
+    private NoLockReservationService reservationService;
 
     @Autowired
     private PerformanceRepository performanceRepository;
@@ -78,7 +78,7 @@ class ReservationServiceConcurrencyTest {
 
         Performance result = performanceRepository.findById(performanceId).orElseThrow();
 
-        System.out.println("=== Stage 2: Pessimistic lock ===");
+        System.out.println("=== Stage 1: no locking ===");
         System.out.println("total seats    : " + TOTAL_SEATS);
         System.out.println("requests       : " + CONCURRENT_REQUESTS);
         System.out.println("succeeded      : " + successCount.get());

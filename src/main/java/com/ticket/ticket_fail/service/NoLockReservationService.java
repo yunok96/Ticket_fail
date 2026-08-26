@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ReservationService {
+public class NoLockReservationService {
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
 
