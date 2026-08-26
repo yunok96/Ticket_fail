@@ -15,12 +15,14 @@ public class PessimisticLockReservationService {
     private final ReservationRepository reservationRepository;
 
     /**
-     * Stage 2: prevent overbooking with pessimistic lock.
+     * Stage 2: prevent overbooking with a pessimistic lock.
      *
-     * The read of reservedSeats and the write that follows are not atomic,
-     * so two concurrent callers can both observe the same value, both pass
-     * the sold-out check, and both increment. This is a lost update, and it
-     * is the exact failure this stage is meant to reproduce.
+     * findWithLockById issues SELECT ... FOR UPDATE, so the row is locked when
+     * it is read rather than when it is written, and stays locked until the
+     * transaction commits. This closes the check-then-act gap that stage 1
+     * exposes: a second caller cannot read the counter until the first has
+     * finished writing it. The cost is throughput, since requests for the same
+     * performance are now serialised.
      */
     @Transactional
     public void reserve(long performanceId, String userId) {

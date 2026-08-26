@@ -95,7 +95,7 @@ class NoLockReservationServiceConcurrencyTest {
                 .isZero();
 
         assertThat(result.getReservedSeats())
-                .as("reserved seats must never exceed the total")
-                .isEqualTo(TOTAL_SEATS);
+                .as("without locking the counter drifts from the number of successful reservations")
+                .isEqualTo(successCount.get());
     }
 }
