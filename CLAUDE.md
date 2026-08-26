@@ -8,10 +8,11 @@ Java 17 / Spring Boot 3.x / Gradle / Spring Data JPA
 DB: H2 (2단계 락 실험 시 Docker Postgres로 전환 예정)
 
 ## 진행 상태
-- [ ] 1단계: 락 없이 구현 → 동시 요청 100건으로 오버부킹 재현 (진행 중)
-- [ ] 2단계: 비관적 락 적용, before/after 비교
-- [ ] 3단계: 낙관적 락 / Redis 분산 락 비교
-- [ ] 4단계: AWS 배포, README 정리
+- [x] 1단계: 락 없이 구현 → 동시 요청 100건으로 오버부킹 재현 (진행 중)
+- [x] 2단계: 비관적 락 적용, before/after 비교
+- [x] 3단계: 낙관적 락 적용, 낙관적 락 retry 버전과 비교
+- [ ] 4단계: Redis 분산 락 적용, 낙관적 락과 비교
+- [ ] 5단계: AWS 배포, README 정리
 
 ## 도메인
 - Performance: totalSeats, reservedSeats (좌석 지정 없이 수량 카운터 방식)
