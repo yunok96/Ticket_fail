@@ -78,7 +78,7 @@ class ReservationServiceConcurrencyTest {
 
         Performance result = performanceRepository.findById(performanceId).orElseThrow();
 
-        System.out.println("=== Stage 1: no locking ===");
+        System.out.println("=== Stage 2: Pessimistic lock ===");
         System.out.println("total seats    : " + TOTAL_SEATS);
         System.out.println("requests       : " + CONCURRENT_REQUESTS);
         System.out.println("succeeded      : " + successCount.get());
