@@ -71,9 +71,11 @@ class PessimisticLockReservationServiceConcurrencyTest {
         }
 
         readyLatch.await();                      // wait until every thread is at the line
+        long startedAt = System.currentTimeMillis();
         startLatch.countDown();                  // fire
 
         boolean finished = doneLatch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        long elapsedMs = System.currentTimeMillis() - startedAt;
         executor.shutdownNow();
 
         Performance result = performanceRepository.findById(performanceId).orElseThrow();
@@ -97,5 +99,8 @@ class PessimisticLockReservationServiceConcurrencyTest {
         assertThat(result.getReservedSeats())
                 .as("reserved seats must never exceed the total")
                 .isEqualTo(TOTAL_SEATS);
+
+        System.out.println("reserved seats : " + result.getReservedSeats());
+        System.out.println("elapsed (ms)   : " + elapsedMs);
     }
 }

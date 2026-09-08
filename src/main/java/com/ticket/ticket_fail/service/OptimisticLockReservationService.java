@@ -1,10 +1,8 @@
 package com.ticket.ticket_fail.service;
 
 import com.ticket.ticket_fail.entity.OptimisticLockPerformance;
-import com.ticket.ticket_fail.entity.Performance;
 import com.ticket.ticket_fail.entity.Reservation;
 import com.ticket.ticket_fail.repository.OptimisticLockPerformanceRepository;
-import com.ticket.ticket_fail.repository.PerformanceRepository;
 import com.ticket.ticket_fail.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
